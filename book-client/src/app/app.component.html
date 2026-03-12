@@ -17,6 +17,19 @@
   </header>
 
   <main class="content">
+
+  <div class="page-header">
+    <div class="page-header-left">
+      <h1 class="page-title">Book Collection</h1>
+      <p class="page-subtitle">Manage and track your entire library in one place</p>
+    </div>
+    <div class="page-stats">
+      <div class="stat">
+        <span class="stat-number">{{ books.length }}</span>
+        <span class="stat-label">Total Books</span>
+      </div>
+    </div>
+  </div>
     <div class="table-wrap" *ngIf="books.length > 0; else empty">
       <table>
         <thead>
