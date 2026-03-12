@@ -22,7 +22,7 @@ A full-stack web application for managing a book collection. Built with ASP.NET 
 
 ## Project Structure
 ```
-book-manager/
+LibraryManagement/
 ├── BookManagement/       # ASP.NET Web API
 │   ├── Controllers/
 │   │   └── BooksController.cs
