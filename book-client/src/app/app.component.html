@@ -1,0 +1,126 @@
+<div class="shell">
+  <header class="topbar">
+    <div class="brand">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+      </svg>
+      <span>BookShelf</span>
+    </div>
+    <button class="btn-primary" (click)="openAdd()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <line x1="12" y1="5" x2="12" y2="19"/>
+        <line x1="5" y1="12" x2="19" y2="12"/>
+      </svg>
+      Add Book
+    </button>
+  </header>
+
+  <main class="content">
+    <div class="table-wrap" *ngIf="books.length > 0; else empty">
+      <table>
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>ISBN</th>
+            <th>Published</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let book of books">
+            <td class="td-title">{{ book.title }}</td>
+            <td>{{ book.author }}</td>
+            <td class="td-mono">{{ book.isbn }}</td>
+            <td>{{ book.publicationDate | date:'mediumDate' }}</td>
+            <!-- <td class="td-actions">
+              <button class="btn-icon" title="Edit" (click)="openEdit(book)">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                </svg>
+              </button>
+              <button class="btn-icon btn-danger" title="Delete" (click)="delete(book.id)">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="3 6 5 6 21 6"/>
+                  <path d="M19 6l-1 14H6L5 6"/>
+                  <path d="M10 11v6"/><path d="M14 11v6"/>
+                  <path d="M9 6V4h6v2"/>
+                </svg>
+              </button>
+            </td> -->
+            <td class="td-actions">
+              <button class="btn-icon" (click)="openEdit(book)">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                </svg>
+                Edit
+              </button>
+              <button class="btn-icon btn-danger" (click)="delete(book.id)">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="3 6 5 6 21 6"/>
+                  <path d="M19 6l-1 14H6L5 6"/>
+                  <path d="M10 11v6"/><path d="M14 11v6"/>
+                  <path d="M9 6V4h6v2"/>
+                </svg>
+                Delete
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <ng-template #empty>
+      <div class="empty-state">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+          <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+        </svg>
+        <p>No books yet. Add your first one.</p>
+      </div>
+    </ng-template>
+  </main>
+
+  <div class="overlay" *ngIf="showForm" (click)="cancel()"></div>
+
+  <div class="drawer" [class.open]="showForm">
+    <div class="drawer-header">
+      <h2>{{ editingBook ? 'Edit Book' : 'New Book' }}</h2>
+      <button class="btn-icon" (click)="cancel()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"/>
+          <line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="drawer-body">
+      <div class="field">
+        <label>Title</label>
+        <input type="text" [(ngModel)]="form.title" placeholder="Book title" />
+      </div>
+      <div class="field">
+        <label>Author</label>
+        <input type="text" [(ngModel)]="form.author" placeholder="Author name" />
+      </div>
+      <div class="field">
+        <label>ISBN</label>
+        <input type="text" [(ngModel)]="form.isbn" placeholder="978-XXXXXXXXXX" />
+      </div>
+      <div class="field">
+        <label>Publication Date</label>
+        <input type="date" [(ngModel)]="form.publicationDate" />
+      </div>
+    </div>
+
+    <div class="drawer-footer">
+      <button class="btn-ghost" (click)="cancel()">Cancel</button>
+      <button class="btn-primary" (click)="save()">
+        {{ editingBook ? 'Save Changes' : 'Add Book' }}
+      </button>
+    </div>
+  </div>
+</div>
