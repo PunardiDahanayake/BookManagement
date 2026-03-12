@@ -61,6 +61,17 @@
   background: #e4e4e7;
 }
 
+.drawer-footer .btn-primary {
+  background: #2563eb;
+  color: #fff;
+  border: 1px solid #2563eb;
+}
+
+.drawer-footer .btn-primary:hover {
+  background: #1d4ed8;
+  border-color: #1d4ed8;
+}
+
 .content {
   padding: 2.2rem 2rem;
   max-width: 1100px;
